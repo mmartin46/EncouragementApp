@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1990dp"
+        android:scaleType="fitXY"
+        android:alpha=".99"
+        android:src="@drawable/background"/>
+
+    <Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:background="@color/backColor"
+        android:id="@+id/title"
+        tools:ignore="MissingConstraints">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Encouragment App"
+            android:textSize="20dp"
+            android:textColor="@color/primaryColor"
+            android:gravity="center_horizontal"/>
+    </Toolbar>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_below="@+id/title"
+        android:layout_marginTop="30dp"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginTop="130dp"
+            android:layout_above="@id/userInput"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:textColor="@color/backColor"
+            android:text="How are you feeling today?"></TextView>
+
+
+        <EditText
+            android:id="@+id/userInput"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:alpha=".7"
+            android:inputType="textCapSentences|textAutoCorrect"
+            android:textColor="@color/black"
+            android:paddingBottom="20dp"
+            tools:ignore="MissingConstraints"/>
+
+
+        <Button
+            android:id="@+id/searchBtn"
+            android:layout_width="200dp"
+            android:layout_height="80dp"
+            android:layout_below="@id/userInput"
+            android:backgroundTint="@color/backColor"
+            android:text="Enter"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/clearBtn"
+            android:layout_width="200dp"
+            android:layout_height="80dp"
+            android:layout_below="@id/userInput"
+            android:layout_alignRight="@id/userInput"
+            android:backgroundTint="@color/backColor"
+            android:text="Clear"
+            android:textColor="@color/white" />
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>
