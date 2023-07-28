@@ -8,6 +8,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 
 public class MainActivity extends AppCompatActivity {
     // Variables
@@ -144,11 +148,16 @@ public class MainActivity extends AppCompatActivity {
 
         public void initTokens() {
             happyTokens = new String[] {
-                    "happy", "glad", "joy"
+                    "happy", "glad", "joy",
+                    "cheer", "elated", "well",
+                    "bright", "fair", "hope"
             };
 
             sadTokens = new String[] {
-                    "sad", "depressed"
+                    "sad", "depressed", "miser",
+                    "un", "bad", "upset", "broken",
+                    "dis", "mourn", "low", "suicidal",
+                    "grieve"
             };
             emotionArr = new int[]{ 0, 0 };
         }

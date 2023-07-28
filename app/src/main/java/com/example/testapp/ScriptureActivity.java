@@ -79,8 +79,10 @@ public class ScriptureActivity extends AppCompatActivity {
         mentalButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MentalLayout.class);
-                startActivity(intent);
+                toast = Toast.makeText(mContext, "TODO: Screen Unfinished.", Toast.LENGTH_SHORT);
+                toast.show();
+//                Intent intent = new Intent(getApplicationContext(), MentalLayout.class);
+//                startActivity(intent);
             }
         });
     }
