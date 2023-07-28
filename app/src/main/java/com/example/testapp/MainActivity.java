@@ -2,13 +2,17 @@ package com.example.testapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.charts.PieChart;
+
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -121,8 +125,24 @@ public class MainActivity extends AppCompatActivity {
                 // If the response was sad.
                 setChosenScripture(scrip.getScripture("SAD"));
             }
-            System.out.println(getChosenScripture());
+            writeToFile();
         }
+        er.setEmotion(0, 0);
+        er.setEmotion(1, 0);
+    }
+
+    private void writeToFile() {
+        try {
+            FileOutputStream fos = openFileOutput("data.txt", Context.MODE_PRIVATE);
+            String line = getUserInputText().getText().toString() + " " + ((float) ((er.getEmotion(0) / (er.getEmotion(1))))) + "\n";
+            fos.write(line.getBytes());
+            System.out.println("DEBUG: " + line);
+            fos.close();
+        } catch (IOException e) {
+            System.out.println("writeToFile(): Exception occurred.");
+            e.printStackTrace();
+        }
+
     }
 
 
@@ -159,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
                     "dis", "mourn", "low", "suicidal",
                     "grieve"
             };
-            emotionArr = new int[]{ 0, 0 };
+            emotionArr = new int[]{ 1, 1 };
         }
 
 
