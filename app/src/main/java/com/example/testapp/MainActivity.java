@@ -4,21 +4,21 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+
 public class MainActivity extends AppCompatActivity {
-    Button searchBtn, clearBtn;
+    private Button searchBtn, clearBtn;
 
-    String chosenScripture;
-    Toast toast;
+    private static String chosenScripture;
+    private Toast toast;
 
-    EditText userInputText;
-    EmotionRecognizer er;
+    private EditText userInputText;
+    private EmotionRecognizer er;
 
-    Scriptures scrip;
+    private Scriptures scrip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +39,24 @@ public class MainActivity extends AppCompatActivity {
 
             processInput();
 
-            if (chosenScripture.equals("")) {
+            if (getUserInputText().length() > 0) {
                 Intent intent = new Intent(getApplicationContext(), ScriptureActivity.class);
-                ScriptureActivity.setCloudText(chosenScripture);
                 startActivity(intent);
             }
         });
     }
 
+    public EditText getUserInputText() {
+        return userInputText;
+    }
+
+    public String getChosenScripture() {
+        return chosenScripture;
+    }
+
+    public void setChosenScripture(String chosenScripture) {
+        MainActivity.chosenScripture = chosenScripture;
+    }
 
 
     private void clearBtnClicked() {
@@ -59,13 +69,14 @@ public class MainActivity extends AppCompatActivity {
             toast = Toast.makeText(this, "Request already cleared.", Toast.LENGTH_SHORT);
             toast.show();
         }
-        userInputText.getText().clear();
+        getUserInputText().getText().clear();
     }
 
     // Checks if the input is empty, else processes it.
     private void processInput() {
-        String userInput = userInputText.getText().toString();
+        String userInput = getUserInputText().getText().toString();
         userInput = userInput.toLowerCase();
+
 
         if (userInput.length() == 0) {
             toast = Toast.makeText(this, "Please type in your request.", Toast.LENGTH_SHORT);
@@ -89,12 +100,13 @@ public class MainActivity extends AppCompatActivity {
 
             if (er.getEmotion(0) >= er.getEmotion(1))
             {
-                chosenScripture = scrip.getScripture("HAPPY");
+                setChosenScripture(scrip.getScripture("HAPPY"));
             }
             else
             {
-                chosenScripture = scrip.getScripture("SAD");
+                setChosenScripture(scrip.getScripture("SAD"));
             }
+            System.out.println(getChosenScripture());
         }
     }
 
