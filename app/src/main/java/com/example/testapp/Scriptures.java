@@ -20,8 +20,8 @@ public class Scriptures {
                 "Psalm 37: \"Delight thyself also in the Lord: and he shall give thee the desires of thine heart.\""
         };
         String sad[] = {
-                "James 5:13 \"Is any among you afflicted? let him pray. Is any merry? let him sing psalms.\"",
-                "1 Thessalonians 5:16 \"Rejoice evermore.\"",
+                "John 14:1 \"Let not your heart be troubled: ye believe in God, believe also in me.\"",
+                "Psalm 55:22 \" Cast thy burden upon the Lord, and he shall sustain thee: he shall never suffer the righteous to be moved.\"",
                 "Psalm 37: \"Delight thyself also in the Lord: and he shall give thee the desires of thine heart.\""
         };
 

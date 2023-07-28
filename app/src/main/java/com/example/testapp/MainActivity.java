@@ -2,6 +2,7 @@ package com.example.testapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +11,8 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     Button searchBtn, clearBtn;
+
+    String chosenScripture;
     Toast toast;
 
     EditText userInputText;
@@ -32,10 +35,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void searchBtnClicked() {
-        searchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                processInput();
+        searchBtn.setOnClickListener(v -> {
+
+            processInput();
+
+            if (chosenScripture.equals("")) {
+                Intent intent = new Intent(getApplicationContext(), ScriptureActivity.class);
+                ScriptureActivity.setCloudText(chosenScripture);
+                startActivity(intent);
             }
         });
     }
@@ -43,12 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void clearBtnClicked() {
-        clearBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearInput();
-            }
-        });
+        clearBtn.setOnClickListener(v -> clearInput());
     }
 
     // Clears the input from the user's input.
@@ -87,28 +89,28 @@ public class MainActivity extends AppCompatActivity {
 
             if (er.getEmotion(0) >= er.getEmotion(1))
             {
-                System.out.println(scrip.getScripture("HAPPY"));
+                chosenScripture = scrip.getScripture("HAPPY");
             }
             else
             {
-                System.out.println(scrip.getScripture("SAD"));
+                chosenScripture = scrip.getScripture("SAD");
             }
         }
     }
 
 
-    private class EmotionRecognizer {
+    private static class EmotionRecognizer {
 
 
         // Emotion Recognition
-        private String happyTokens[];
-        private String sadTokens[];
+        private String[] happyTokens;
+        private String[] sadTokens;
 
         /*
         happy - 0
         sad - 1
          */
-        private int emotionArr[];
+        private int[] emotionArr;
 
 
         public EmotionRecognizer() {
