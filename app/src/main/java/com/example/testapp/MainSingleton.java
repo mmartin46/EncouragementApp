@@ -1,8 +1,11 @@
 package com.example.testapp;
 
+import android.annotation.SuppressLint;
+
 public class MainSingleton {
 
-    private static MainActivity instance = new MainActivity();
+    @SuppressLint("StaticFieldLeak")
+    private static final MainActivity instance = new MainActivity();
 
     private MainSingleton() {}
 

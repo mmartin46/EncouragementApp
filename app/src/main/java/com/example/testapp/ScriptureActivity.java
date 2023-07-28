@@ -17,7 +17,7 @@ import android.widget.Toast;
 public class ScriptureActivity extends AppCompatActivity {
 
     private TextView cloudText;
-    private Button copyButton, shareButton;
+    private Button copyButton, shareButton, mentalButton;
     private ImageView backBtn;
     private ClipboardManager clipboard;
     private Toast toast;
@@ -33,11 +33,13 @@ public class ScriptureActivity extends AppCompatActivity {
         this.backBtn = findViewById(R.id.backBtn);
         this.copyButton = findViewById(R.id.copyButton);
         this.shareButton = findViewById(R.id.shareButton);
+        this.mentalButton = findViewById(R.id.graphBtn);
 
         setCloudText();
         backBtnClicked();
         copyBtnClicked(this);
         shareBtnClicked(this);
+        mentalBtnClicked(this);
     }
 
     public ScriptureActivity() {}
@@ -68,7 +70,18 @@ public class ScriptureActivity extends AppCompatActivity {
         shareButton.setOnClickListener(v -> {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
+            shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, cloudText.getText());
             mContext.startActivity(Intent.createChooser(shareIntent, "Share via..."));
+        });
+    }
+
+    private void mentalBtnClicked(Context mContext) {
+        mentalButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MentalLayout.class);
+                startActivity(intent);
+            }
         });
     }
 }
