@@ -38,8 +38,9 @@
 
     <AbsoluteLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="400dp"
         android:layout_below="@id/title"
+        android:id='@+id/scripLayout'
         tools:ignore="Deprecated">
 
         <ImageView
@@ -62,5 +63,33 @@
             android:id="@+id/cloudText"
             android:textColor="@color/backColor"/>
     </AbsoluteLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_below="@id/scripLayout">
+
+        <Button
+            android:id="@+id/copyButton"
+            android:layout_width="200dp"
+            android:layout_height="80dp"
+            android:layout_below="@id/scripLayout"
+            android:backgroundTint="@color/backColor"
+            android:text="Copy"
+            android:textColor="@color/primaryColor" />
+        <Button
+            android:id="@+id/shareButton"
+            android:layout_width="200dp"
+            android:layout_height="80dp"
+            android:layout_alignRight="@id/copyButton"
+            android:layout_below="@id/scripLayout"
+            android:backgroundTint="@color/backColor"
+            android:text="Share"
+            android:textColor="@color/primaryColor">
+        </Button>
+    </LinearLayout>
 
 </RelativeLayout>

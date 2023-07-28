@@ -10,9 +10,16 @@ import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
+    // Variables
     private Button searchBtn, clearBtn;
 
+    /*
+     The scripture that will be displayed on
+     in the ScriptureActivity class.
+     */
     private static String chosenScripture;
+
+
     private Toast toast;
 
     private EditText userInputText;
@@ -77,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         String userInput = getUserInputText().getText().toString();
         userInput = userInput.toLowerCase();
 
-
+        // If the user used no input, send an alert to the user.
         if (userInput.length() == 0) {
             toast = Toast.makeText(this, "Please type in your request.", Toast.LENGTH_SHORT);
             toast.show();
@@ -86,24 +93,28 @@ public class MainActivity extends AppCompatActivity {
         {
             er = new EmotionRecognizer();
             int idx;
+            // Happy responses
             for (idx = 0; idx < er.getHappyTokens().length; ++idx) {
                 if (userInput.contains(er.happyTokens[idx])) {
                     er.incEmotion(0);
                 }
             }
 
+            // Sad Responses
             for (idx = 0; idx < er.getSadTokens().length; ++idx) {
                 if (userInput.contains(er.sadTokens[idx])) {
                     er.incEmotion(1);
                 }
             }
 
+            // If the response was happy.
             if (er.getEmotion(0) >= er.getEmotion(1))
             {
                 setChosenScripture(scrip.getScripture("HAPPY"));
             }
             else
             {
+                // If the response was sad.
                 setChosenScripture(scrip.getScripture("SAD"));
             }
             System.out.println(getChosenScripture());
@@ -111,6 +122,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    // The class is used to recognize a user's emotion
+    // based on keywords.
     private static class EmotionRecognizer {
 
 
