@@ -9,7 +9,13 @@ import android.os.Environment;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.DefaultAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -42,6 +48,7 @@ public class MentalLayout extends AppCompatActivity {
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         }
+        initLineChart();
     }
 
     private void getDataSet() throws IOException, ParseException {
@@ -60,7 +67,7 @@ public class MentalLayout extends AppCompatActivity {
             String[] temp = line.split(",");
             double tempNum = Double.parseDouble(temp[1]);
 
-            SimpleDateFormat sDf = new SimpleDateFormat("mm-dd-yyyy");
+            SimpleDateFormat sDf = new SimpleDateFormat("MM-dd-yyy HH:MM:SS");
             Date time = sDf.parse(temp[0]);
 
             // Add the date and value in the arraylist.
@@ -85,8 +92,21 @@ public class MentalLayout extends AppCompatActivity {
     }
 
     private void initLineChart() {
+        XAxis xAxis = lineChart.getXAxis();
+        MyXAxisValueFormatter mvF = new MyXAxisValueFormatter();
+        xAxis.setValueFormatter(mvF);
+
         lineChart.setTouchEnabled(true);
         lineChart.setPinchZoom(true);
+
+        LineDataSet lineDataSet = new LineDataSet(dataValues, "Dataset");
+
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(lineDataSet);
+
+        LineData data = new LineData(dataSets);
+        lineChart.setData(data);
+        lineChart.invalidate();
     }
 
 }

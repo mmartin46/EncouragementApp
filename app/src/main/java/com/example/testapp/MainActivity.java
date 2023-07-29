@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void writeToFile() throws IOException {
-        String date = new SimpleDateFormat("MM-dd-yyyy").format(new Date());
+        String date = new SimpleDateFormat("MM-dd-yyyy HH:MM:SS").format(new Date());
         LocalDate now = null;
 
         String extStorageDir = Environment.getExternalStorageDirectory().toString();
