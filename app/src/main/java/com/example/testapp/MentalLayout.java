@@ -1,12 +1,15 @@
 package com.example.testapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.util.Pair;
+
 import android.os.Bundle;
 import android.os.Environment;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.Entry;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,42 +19,69 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MentalLayout extends AppCompatActivity {
 
     LineChart lineChart;
-    private ArrayList<String> lines;
+    private ArrayList<Pair<Long, Double>> lines;
+    private ArrayList<Entry> dataValues;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mental_layout);
 
         lineChart = (LineChart) findViewById(R.id.graph);
+        lines = new ArrayList<>();
 
         try {
-            getDataSet();
-        } catch (IOException e) {
+            initEntries();
+        } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void getDataSet() throws IOException {
+    private void getDataSet() throws IOException, ParseException {
+        // Find the file
         String extStorageDir = Environment.getExternalStorageDirectory().toString();
         File file = new File(extStorageDir, "data.csv");
-
         FileInputStream inStream = new FileInputStream(file);
 
+        // Read the file contents
         BufferedReader bufReader = new BufferedReader(new BufferedReader(new InputStreamReader(inStream)));
-        ArrayList<String> fileContents = new ArrayList<>();
 
         String line = bufReader.readLine();
         while (line != null) {
-            fileContents.add(line);
-//            System.out.println(line);
+
+            // Split the date from the value
+            String[] temp = line.split(",");
+            double tempNum = Double.parseDouble(temp[1]);
+
+            SimpleDateFormat sDf = new SimpleDateFormat("mm-dd-yyyy");
+            Date time = sDf.parse(temp[0]);
+
+            // Add the date and value in the arraylist.
+            Pair<Long, Double> p = new Pair<>(time.getTime(), tempNum);
+            lines.add(p);
+            // Go to the next line.
             line = bufReader.readLine();
         }
         bufReader.close();
+    }
+
+
+    private void initEntries() throws IOException, ParseException {
+        getDataSet();
+
+        dataValues = new ArrayList<>();
+        for (int i = 0; i < lines.size(); i++)
+        {
+            System.out.println(lines.get(i));
+            dataValues.add(new Entry(lines.get(i).first, lines.get(i).second.floatValue()));
+        }
     }
 
     private void initLineChart() {
