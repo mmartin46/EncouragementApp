@@ -4,17 +4,21 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.Settings;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.github.mikephil.charting.charts.PieChart;
-
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -49,10 +53,24 @@ public class MainActivity extends AppCompatActivity {
         clearBtnClicked();
     }
 
+    public void askPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (!Environment.isExternalStorageManager()) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                startActivity(intent);
+                return;
+            }
+        }
+    }
+
     private void searchBtnClicked() {
         searchBtn.setOnClickListener(v -> {
-
-            processInput();
+            askPermission();
+            try {
+                processInput();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
             if (getUserInputText().length() > 0) {
                 Intent intent = new Intent(getApplicationContext(), ScriptureActivity.class);
@@ -88,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Checks if the input is empty, else processes it.
-    private void processInput() {
+    private void processInput() throws IOException {
         String userInput = getUserInputText().getText().toString();
         userInput = userInput.toLowerCase();
 
@@ -131,18 +149,56 @@ public class MainActivity extends AppCompatActivity {
         er.setEmotion(1, 0);
     }
 
-    private void writeToFile() {
-        try {
-            FileOutputStream fos = openFileOutput("data.txt", Context.MODE_PRIVATE);
-            String line = getUserInputText().getText().toString() + " " + ((float) ((er.getEmotion(0) / (er.getEmotion(1))))) + "\n";
-            fos.write(line.getBytes());
-            System.out.println("DEBUG: " + line);
-            fos.close();
-        } catch (IOException e) {
-            System.out.println("writeToFile(): Exception occurred.");
-            e.printStackTrace();
-        }
+    private void writeToFile() throws IOException {
+        String date = new SimpleDateFormat("MM-dd-yyyy").format(new Date());
+        LocalDate now = null;
 
+        String extStorageDir = Environment.getExternalStorageDirectory().toString();
+        File file = new File(extStorageDir, "data.csv");
+
+
+        if (file.exists()) {
+
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                now = LocalDate.now();
+            }
+
+            write((date + "," + ((double) er.getEmotion(0) / er.getEmotion(1)) + "\n").getBytes(), file, true);
+        }
+        else
+        {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                now = LocalDate.now();
+            }
+
+            write((date + "," + ((double) er.getEmotion(0) / er.getEmotion(1)) + "\n").getBytes(), file, false);
+        }
+    }
+
+    private void write(byte[] data, File file, Boolean append) throws IOException {
+        BufferedOutputStream bOS = null;
+
+        try {
+            FileOutputStream fOS = new FileOutputStream(file, append);
+            bOS = new BufferedOutputStream(fOS);
+            bOS.write(data);
+        }
+        finally
+        {
+            if (bOS != null)
+            {
+                try
+                {
+                    bOS.flush();
+                    bOS.close();
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
 
