@@ -1,5 +1,7 @@
 package com.example.testapp;
 
+import static android.icu.lang.UCharacter.JoiningGroup.SAD;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -24,6 +26,9 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
     // Variables
     private Button searchBtn, clearBtn;
+
+    private final int HAPPY = 0;
+    private final int SAD = 0;
 
     /*
      The scripture that will be displayed on
@@ -65,13 +70,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void searchBtnClicked() {
         searchBtn.setOnClickListener(v -> {
+            // Ask for permission to the user's files.
             askPermission();
             try {
+                // Process the user's files.
                 processInput();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 
+            // If the user didn't use an empty string,
+            // go to the other string.
             if (getUserInputText().length() > 0) {
                 Intent intent = new Intent(getApplicationContext(), ScriptureActivity.class);
                 startActivity(intent);
@@ -98,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Clears the input from the user's input.
     private void clearInput() {
+
         if (userInputText.getText().length() == 0) {
             toast = Toast.makeText(this, "Request already cleared.", Toast.LENGTH_SHORT);
             toast.show();
@@ -122,19 +132,19 @@ public class MainActivity extends AppCompatActivity {
             // Happy responses
             for (idx = 0; idx < er.getHappyTokens().length; ++idx) {
                 if (userInput.contains(er.happyTokens[idx])) {
-                    er.incEmotion(0);
+                    er.incEmotion(HAPPY);
                 }
             }
 
             // Sad Responses
             for (idx = 0; idx < er.getSadTokens().length; ++idx) {
                 if (userInput.contains(er.sadTokens[idx])) {
-                    er.incEmotion(1);
+                    er.incEmotion(SAD);
                 }
             }
 
             // If the response was happy.
-            if (er.getEmotion(0) >= er.getEmotion(1))
+            if (er.getEmotion(HAPPY) >= er.getEmotion(SAD))
             {
                 setChosenScripture(scrip.getScripture("HAPPY"));
             }
@@ -145,8 +155,8 @@ public class MainActivity extends AppCompatActivity {
             }
             writeToFile();
         }
-        er.setEmotion(0, 0);
-        er.setEmotion(1, 0);
+        er.setEmotion(HAPPY, 0); // Happy
+        er.setEmotion(SAD, 0); // Sad
     }
 
     private void writeToFile() throws IOException {
@@ -164,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
                 now = LocalDate.now();
             }
 
-            write((date + "," + ((double) er.getEmotion(0) / er.getEmotion(1)) + "\n").getBytes(), file, true);
+            write((date + "," + ((double) er.getEmotion(HAPPY) / er.getEmotion(SAD)) + "\n").getBytes(), file, true);
         }
         else
         {
@@ -173,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
                 now = LocalDate.now();
             }
 
-            write((date + "," + ((double) er.getEmotion(0) / er.getEmotion(1)) + "\n").getBytes(), file, false);
+            write((date + "," + ((double) er.getEmotion(HAPPY) / er.getEmotion(SAD)) + "\n").getBytes(), file, false);
         }
     }
 

@@ -45,6 +45,7 @@ public class ScriptureActivity extends AppCompatActivity {
     public ScriptureActivity() {}
 
 
+    // Sets the text that's within the cloud of this layout.
     public void setCloudText() {
         cloudText.setText(MainSingleton.getInstance().getChosenScripture());
     }
