@@ -82,8 +82,8 @@ public class ScriptureActivity extends AppCompatActivity {
             public void onClick(View v) {
                 toast = Toast.makeText(mContext, "TODO: Screen Unfinished.", Toast.LENGTH_SHORT);
                 toast.show();
-//                Intent intent = new Intent(getApplicationContext(), MentalLayout.class);
-//                startActivity(intent);
+                Intent intent = new Intent(getApplicationContext(), MentalLayout.class);
+                startActivity(intent);
             }
         });
     }
