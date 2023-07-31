@@ -3,6 +3,7 @@ package com.example.testapp;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Pair;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Environment;
 
@@ -33,7 +34,7 @@ import java.util.Date;
 public class MentalLayout extends AppCompatActivity {
 
     LineChart lineChart;
-    private ArrayList<Pair<Long, Double>> lines;
+    private ArrayList<Pair<Date, Double>> lines;
     private ArrayList<Entry> dataValues;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,11 +68,11 @@ public class MentalLayout extends AppCompatActivity {
             String[] temp = line.split(",");
             double tempNum = Double.parseDouble(temp[1]);
 
-            SimpleDateFormat sDf = new SimpleDateFormat("MM-dd-yyy HH:MM:SS");
+            SimpleDateFormat sDf = new SimpleDateFormat("MM-dd-yyyy HH:MM:SS");
             Date time = sDf.parse(temp[0]);
 
             // Add the date and value in the arraylist.
-            Pair<Long, Double> p = new Pair<>(time.getTime(), tempNum);
+            Pair<Date, Double> p = new Pair<>(time, tempNum);
             lines.add(p);
             // Go to the next line.
             line = bufReader.readLine();
@@ -87,9 +88,10 @@ public class MentalLayout extends AppCompatActivity {
         for (int i = 0; i < lines.size(); i++)
         {
             System.out.println(lines.get(i));
-            dataValues.add(new Entry(lines.get(i).first, lines.get(i).second.floatValue()));
+            dataValues.add(new Entry(lines.get(i).first.getTime(), lines.get(i).second.floatValue()));
         }
     }
+
 
     private void initLineChart() {
         XAxis xAxis = lineChart.getXAxis();
@@ -99,12 +101,19 @@ public class MentalLayout extends AppCompatActivity {
         lineChart.setTouchEnabled(true);
         lineChart.setPinchZoom(true);
 
-        LineDataSet lineDataSet = new LineDataSet(dataValues, "Dataset");
+        LineDataSet lineDataSet = new LineDataSet(dataValues, "Daily Mood");
+        lineDataSet.setCircleColor(R.color.primaryColor);
+        lineDataSet.setValueFormatter(mvF);
+        lineDataSet.setColor(R.color.primaryColor);
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(lineDataSet);
 
         LineData data = new LineData(dataSets);
+        data.setValueTextColor(R.color.primaryColor);
+
+        lineChart.setDescription(null);
+        lineChart.setBorderColor(R.color.primaryColor);
         lineChart.setData(data);
         lineChart.invalidate();
     }
