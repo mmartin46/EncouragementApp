@@ -20,6 +20,7 @@ user's mood as well as implementing a mood tracker.
 ## Questions & Bugs
 If there are any questions, feel free to comment and put in an issue regarding the application.
 
+## Screenshots
 <p float="left">
    <img src="https://i.postimg.cc/ncmdsFs4/encourage-app-scr0.png" width="190" />
    <img src="https://i.postimg.cc/vTVv6hmY/encourage-app-scr1.png" width="190" />
