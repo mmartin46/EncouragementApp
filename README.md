@@ -7,6 +7,8 @@ user's mood as well as implementing a mood tracker.
 
 ## Features
 - Share scriptures to other people through messaging, email, etc.
+
+## Features (Todo)
 - Mood tracker which sends scriptures based on the user's mood.
 - Utilizes a chart to keep track of how positive the user's mood has been
   daily.
@@ -14,6 +16,9 @@ user's mood as well as implementing a mood tracker.
 ## API References
 #### MPAndroid Chart
 - https://github.com/PhilJay/MPAndroidChart
+
+## Questions & Bugs
+If there are any questions, feel free to comment and put in an issue regarding the application.
 
 <p float="left">
    <img src="https://i.postimg.cc/ncmdsFs4/encourage-app-scr0.png" width="190" />
