@@ -10,6 +10,10 @@ user's mood as well as implementing a mood tracker.
 - Mood tracker which sends scriptures based on the user's mood.
 - Utilizes a chart to keep track of how positive the user's mood has been
   daily.
+  
+## API References
+#### MPAndroid Chart
+https://github.com/PhilJay/MPAndroidChart
 
 <p float="left">
    <img src="https://i.postimg.cc/ncmdsFs4/encourage-app-scr0.png" width="190" />
