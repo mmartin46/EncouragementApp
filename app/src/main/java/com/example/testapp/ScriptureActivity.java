@@ -74,6 +74,7 @@ public class ScriptureActivity extends AppCompatActivity {
         shareButton.setOnClickListener(v -> {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, cloudText.getText());
             mContext.startActivity(Intent.createChooser(shareIntent, "Share via..."));
         });
     }
