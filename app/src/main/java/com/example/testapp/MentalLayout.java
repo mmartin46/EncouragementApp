@@ -123,20 +123,15 @@ public class MentalLayout extends AppCompatActivity {
         shareBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                shareIntent.setType("text/plain");
-                shareIntent.putExtra(Intent.EXTRA_EMAIL, "");
-                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "");
-                shareIntent.putExtra(Intent.EXTRA_TEXT, "");
-
-
-
                 String extStorageDir = Environment.getExternalStorageDirectory().toString();
                 File file = new File(extStorageDir, "data.csv");
 
                 Uri u = Uri.fromFile(file);
+
+
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.putExtra(Intent.EXTRA_STREAM, u);
+                shareIntent.setType("text/plain");
                 startActivity(Intent.createChooser(shareIntent, "Send Mail"));
             }
         });
@@ -147,9 +142,13 @@ public class MentalLayout extends AppCompatActivity {
         XAxis xAxis = lineChart.getXAxis();
         MyXAxisValueFormatter mvF = new MyXAxisValueFormatter();
         xAxis.setValueFormatter(mvF);
+        xAxis.setDrawGridLines(false);
+        xAxis.setAxisLineColor(R.color.primaryColor);
+        xAxis.setTextColor(R.color.primaryColor);
 
         lineChart.setTouchEnabled(true);
         lineChart.setPinchZoom(true);
+        lineChart.setDrawMarkers(false);
 
         LineDataSet lineDataSet = new LineDataSet(dataValues, "Daily Mood");
         lineDataSet.setCircleColor(R.color.primaryColor);
