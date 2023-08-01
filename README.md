@@ -13,7 +13,7 @@ user's mood as well as implementing a mood tracker.
   
 ## API References
 #### MPAndroid Chart
-https://github.com/PhilJay/MPAndroidChart
+- https://github.com/PhilJay/MPAndroidChart
 
 <p float="left">
    <img src="https://i.postimg.cc/ncmdsFs4/encourage-app-scr0.png" width="190" />
