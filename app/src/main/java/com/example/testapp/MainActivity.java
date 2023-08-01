@@ -128,6 +128,8 @@ public class MainActivity extends AppCompatActivity {
         else
         {
             er = new EmotionRecognizer();
+
+
             int idx;
             // Happy responses
             for (idx = 0; idx < er.getHappyTokens().length; ++idx) {
@@ -136,12 +138,17 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
+            System.out.println(er.getEmotion(HAPPY));
+
             // Sad Responses
             for (idx = 0; idx < er.getSadTokens().length; ++idx) {
                 if (userInput.contains(er.sadTokens[idx])) {
                     er.incEmotion(SAD);
                 }
             }
+
+            System.out.println(er.getEmotion(HAPPY));
+
 
             // If the response was happy.
             if (er.getEmotion(HAPPY) >= er.getEmotion(SAD))
@@ -155,12 +162,12 @@ public class MainActivity extends AppCompatActivity {
             }
             writeToFile();
         }
-        er.setEmotion(HAPPY, 0); // Happy
-        er.setEmotion(SAD, 0); // Sad
+        er.setEmotion(HAPPY, 1.0); // Happy
+        er.setEmotion(SAD, 1.0); // Sad
     }
 
     private void writeToFile() throws IOException {
-        String date = new SimpleDateFormat("MM-dd-yyyy HH:MM:SS").format(new Date());
+        String date = new SimpleDateFormat("MM-dd-yyyy").format(new Date());
         LocalDate now = null;
 
         String extStorageDir = Environment.getExternalStorageDirectory().toString();
@@ -174,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
                 now = LocalDate.now();
             }
 
-            write((date + "," + ((double) er.getEmotion(HAPPY) / er.getEmotion(SAD)) + "\n").getBytes(), file, true);
+            write((date + "," + (er.getEmotion(HAPPY)) + "\n").getBytes(), file, true);
         }
         else
         {
@@ -183,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
                 now = LocalDate.now();
             }
 
-            write((date + "," + ((double) er.getEmotion(HAPPY) / er.getEmotion(SAD)) + "\n").getBytes(), file, false);
+            write((date + "," + (er.getEmotion(HAPPY)) + "\n").getBytes(), file, false);
         }
     }
 
@@ -225,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
         happy - 0
         sad - 1
          */
-        private int[] emotionArr;
+        private double[] emotionArr;
 
 
         public EmotionRecognizer() {
@@ -245,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
                     "dis", "mourn", "low", "suicidal",
                     "grieve"
             };
-            emotionArr = new int[]{ 1, 1 };
+            emotionArr = new double[]{ 1.0 , 1.0 };
         }
 
 
@@ -259,23 +266,24 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        public int[] getEmotionArr() {
+        public double[] getEmotionArr() {
             return emotionArr;
         }
 
-        public void setEmotion(int idx, int value) {
+        public void setEmotion(int idx, double value) {
             this.emotionArr[idx] = value;
         }
 
         public void incEmotion(int idx) {
-            this.emotionArr[idx]++;
+            this.emotionArr[idx] = this.emotionArr[idx] + 1;
         }
 
         public void decEmotion(int idx) {
-            this.emotionArr[idx]--;
+
+            this.emotionArr[idx] = this.emotionArr[idx] - 1;
         }
 
-        public int getEmotion(int idx) {
+        public double getEmotion(int idx) {
             return emotionArr[idx];
         }
     }

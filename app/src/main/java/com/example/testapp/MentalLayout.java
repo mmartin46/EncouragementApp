@@ -4,8 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Pair;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
@@ -36,10 +39,13 @@ public class MentalLayout extends AppCompatActivity {
     LineChart lineChart;
     private ArrayList<Pair<Date, Double>> lines;
     private ArrayList<Entry> dataValues;
+    private ImageView backBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mental_layout);
+
+        backBtn = findViewById(R.id.backBtn);
 
         lineChart = (LineChart) findViewById(R.id.graph);
         lines = new ArrayList<>();
@@ -68,7 +74,7 @@ public class MentalLayout extends AppCompatActivity {
             String[] temp = line.split(",");
             double tempNum = Double.parseDouble(temp[1]);
 
-            SimpleDateFormat sDf = new SimpleDateFormat("MM-dd-yyyy HH:MM:SS");
+            SimpleDateFormat sDf = new SimpleDateFormat("MM-dd-yyyy");
             Date time = sDf.parse(temp[0]);
 
             // Add the date and value in the arraylist.
@@ -90,6 +96,16 @@ public class MentalLayout extends AppCompatActivity {
             System.out.println(lines.get(i));
             dataValues.add(new Entry(lines.get(i).first.getTime(), lines.get(i).second.floatValue()));
         }
+    }
+
+    private void backBtnClicked() {
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 

@@ -13,13 +13,13 @@ public class MyXAxisValueFormatter extends ValueFormatter implements IAxisValueF
     private SimpleDateFormat mFormat;
 
     public MyXAxisValueFormatter() {
-        mFormat = new SimpleDateFormat("MM-dd-yyyy HH:MM:SS");
+        mFormat = new SimpleDateFormat("MM-dd-yyyy");
     }
 
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
         Date date = new Date((long) value);
-        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy HH:MM:SS", Locale.ENGLISH);
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy", Locale.ENGLISH);
         return sdf.format(date);
     }
 
