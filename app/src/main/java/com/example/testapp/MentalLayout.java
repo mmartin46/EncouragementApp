@@ -4,10 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Pair;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -40,12 +44,14 @@ public class MentalLayout extends AppCompatActivity {
     private ArrayList<Pair<Date, Double>> lines;
     private ArrayList<Entry> dataValues;
     private ImageView backBtn;
+    private Button shareBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mental_layout);
 
         backBtn = findViewById(R.id.backBtn);
+        shareBtn = findViewById(R.id.shareButton);
 
         lineChart = (LineChart) findViewById(R.id.graph);
         lines = new ArrayList<>();
@@ -56,6 +62,11 @@ public class MentalLayout extends AppCompatActivity {
             throw new RuntimeException(e);
         }
         initLineChart();
+        backBtnClicked(this);
+
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+        sharedBtnClicked(this);
     }
 
     private void getDataSet() throws IOException, ParseException {
@@ -98,12 +109,35 @@ public class MentalLayout extends AppCompatActivity {
         }
     }
 
-    private void backBtnClicked() {
+    private void backBtnClicked(Context mContext) {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
+            }
+        });
+    }
+
+    private void sharedBtnClicked(Context mContext) {
+        shareBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_EMAIL, "");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "");
+                shareIntent.putExtra(Intent.EXTRA_TEXT, "");
+
+
+
+                String extStorageDir = Environment.getExternalStorageDirectory().toString();
+                File file = new File(extStorageDir, "data.csv");
+
+                Uri u = Uri.fromFile(file);
+                shareIntent.putExtra(Intent.EXTRA_STREAM, u);
+                startActivity(Intent.createChooser(shareIntent, "Send Mail"));
             }
         });
     }

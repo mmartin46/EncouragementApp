@@ -119,6 +119,8 @@ public class MainActivity extends AppCompatActivity {
     private void processInput() throws IOException {
         String userInput = getUserInputText().getText().toString();
         userInput = userInput.toLowerCase();
+        er = new EmotionRecognizer();
+
 
         // If the user used no input, send an alert to the user.
         if (userInput.length() == 0) {
@@ -127,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
         }
         else
         {
-            er = new EmotionRecognizer();
 
 
             int idx;

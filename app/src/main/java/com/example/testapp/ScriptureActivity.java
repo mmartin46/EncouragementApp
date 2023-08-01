@@ -7,12 +7,15 @@ import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.content.ClipboardManager;
 import android.widget.Toast;
+
+import java.io.File;
 
 public class ScriptureActivity extends AppCompatActivity {
 
@@ -71,7 +74,6 @@ public class ScriptureActivity extends AppCompatActivity {
         shareButton.setOnClickListener(v -> {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
-            shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, cloudText.getText());
             mContext.startActivity(Intent.createChooser(shareIntent, "Share via..."));
         });
     }
