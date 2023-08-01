@@ -12,6 +12,7 @@ based on the user's mood.
 - Mood tracker which sends scriptures based on the user's mood.
 - Utilizes a chart to keep track of how positive the user's mood has been
   daily.
+- Share .csv file of the moodtracker through messaging, email, etc.
   
 ## API References
 #### MPAndroid Chart
