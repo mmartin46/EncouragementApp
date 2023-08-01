@@ -1,6 +1,6 @@
 # EncourageApp
-An android application used to provide scriptures based on the
-user's mood as well as implementing a mood tracker.
+An android application used to provide scriptures from the word 
+based on the user's mood.
 
 ## Authors
 - Mitchell Martin
